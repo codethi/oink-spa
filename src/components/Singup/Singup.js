@@ -1,12 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import IconOink from "../../images/iconoink.png";
+import { singup } from "../../services/auth";
 
 export default function Singup() {
   const [form, setForm] = useState({});
+  const navigate = useNavigate();
 
   function handleForm({ value, name }) {
-    console.log(name, value);
     setForm({
       ...form,
       [name]: value,
@@ -15,7 +17,9 @@ export default function Singup() {
 
   function handleSendForm(e) {
     e.preventDefault();
-    console.log(form);
+    singup(form).then((res) => {
+      navigate("/singin");
+    });
   }
 
   return (
@@ -139,4 +143,5 @@ export const Button = styled.button`
   font-weight: 600;
   color: #fff;
   text-transform: uppercase;
+  cursor: pointer;
 `;
