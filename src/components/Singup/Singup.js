@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import IconOink from "../images/iconoink.png";
+import IconOink from "../../images/iconoink.png";
 
 export default function Singup() {
   const [form, setForm] = useState({});
@@ -19,10 +19,10 @@ export default function Singup() {
   }
 
   return (
-    <SingupContainer>
+    <SingContainer>
       <Image src={IconOink} alt="Logo Oink" />
-      <Form>
-        <Title>SingUp</Title>
+      <Form autoComplete="off">
+        <Title>Cadastro</Title>
         <Input
           placeholder="Digite seu nome"
           name="name"
@@ -70,11 +70,11 @@ export default function Singup() {
 
         <Button onClick={handleSendForm}>Cadastrar</Button>
       </Form>
-    </SingupContainer>
+    </SingContainer>
   );
 }
 
-const SingupContainer = styled.section`
+export const SingContainer = styled.section`
   height: 100vh;
   width: 100%;
   display: flex;
@@ -85,14 +85,14 @@ const SingupContainer = styled.section`
   position: relative;
 `;
 
-const Image = styled.img`
+export const Image = styled.img`
   width: 100px;
   position: absolute;
   top: 20px;
   left: 20px;
 `;
 
-const Form = styled.form`
+export const Form = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -107,14 +107,14 @@ const Form = styled.form`
   background-color: #fff;
 `;
 
-const Title = styled.h1`
+export const Title = styled.h1`
   font-size: 2rem;
   font-weight: 700;
   color: #ff8787;
   padding-bottom: 1rem;
 `;
 
-const Input = styled.input`
+export const Input = styled.input`
   width: 100%;
   font-size: 1rem;
   padding: 0.5rem;
@@ -127,7 +127,7 @@ const Input = styled.input`
   }
 `;
 
-const Button = styled.button`
+export const Button = styled.button`
   width: 100%;
   outline: none;
   border: none;
@@ -136,4 +136,7 @@ const Button = styled.button`
   padding: 0.5rem;
   font-size: 1rem;
   margin-top: 1rem;
+  font-weight: 600;
+  color: #fff;
+  text-transform: uppercase;
 `;

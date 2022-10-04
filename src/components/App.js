@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { GlobalStyle } from "../globalStyles";
 import Details from "./Details";
 import Home from "./Home";
-import Singin from "./Singin";
-import Singup from "./Singup";
+import Singin from "./Singin/Singin";
+import Singup from "./Singup/Singup";
 
 export default function App() {
   return (
