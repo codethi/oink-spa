@@ -3,14 +3,15 @@ import { Button, Image, Input, SingContainer, Title } from "../Singup/Singup";
 import IconOink from "../../images/iconoink.png";
 import { useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Singin.css";
+import { singin } from "../../services/auth";
 
 export default function Singin() {
   const [form, setForm] = useState({});
+  const navigate = useNavigate();
 
   function handleForm({ value, name }) {
-    console.log(name, value);
     setForm({
       ...form,
       [name]: value,
@@ -19,7 +20,10 @@ export default function Singin() {
 
   function handleSendForm(e) {
     e.preventDefault();
-    console.log(form);
+    singin(form).then((res) => {
+      localStorage.setItem("token", res.data.token);
+      navigate("/");
+    });
   }
 
   return (
@@ -32,7 +36,6 @@ export default function Singin() {
           placeholder="Digite seu e-mail"
           name="email"
           type="email"
-          
           onChange={(e) =>
             handleForm({
               name: e.target.name,
@@ -44,7 +47,6 @@ export default function Singin() {
           placeholder="Digite sua senha"
           name="password"
           type="password"
-         
           onChange={(e) =>
             handleForm({
               name: e.target.name,

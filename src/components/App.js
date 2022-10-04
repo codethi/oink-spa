@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import styled from "styled-components";
 import { GlobalStyle } from "../globalStyles";
-import Details from "./Details";
-import Home from "./Home";
+import Details from "./Details/Details";
+import Home from "./Home/Home";
 import Singin from "./Singin/Singin";
 import Singup from "./Singup/Singup";
 

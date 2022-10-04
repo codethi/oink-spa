@@ -1,18 +1,15 @@
 import styled from "styled-components";
 
 export default function Navbar() {
-  return <Wrapper>Cineflex</Wrapper>;
+  return <Wrapper>Oink</Wrapper>;
 }
 
 const Wrapper = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 67px;
-  background-color: #c3cfd9;
+  background-color: #fff;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   color: #e8833a;
   font-size: 34px;
