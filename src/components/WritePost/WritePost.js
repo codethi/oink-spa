@@ -1,8 +1,13 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { create } from "../../services/post";
 
-export default function WritePost({ user }) {
-  const [form, setForm] = useState({});
+import swal from "sweetalert";
+
+export default function WritePost({ user, setRefresh, refresh }) {
+  const [form, setForm] = useState({ text: "", image: "" });
+  const jwt = localStorage.getItem("token");
+
   function handleForm({ value, name }) {
     setForm({
       ...form,
@@ -12,20 +17,29 @@ export default function WritePost({ user }) {
 
   function handleSendForm(e) {
     e.preventDefault();
-
-    console.log(form);
-    /* singin(form).then((res) => {
-      localStorage.setItem("token", res.data.token);
-      navigate("/");
-    }); */
+    create(form, jwt).then((res) => {
+      setForm({ text: "", image: "" });
+      swal({
+        title: "Success",
+        text: "Post criado com sucesso!",
+        icon: "success",
+        timer: "7000",
+      });
+      setRefresh(refresh + 1);
+    });
   }
+
+  /* https://picsum.photos/1000/500 */
+
   return (
     <WriteContainer>
-      <form autoComplete="off">
+      <form>
         <textarea
           placeholder={`Diga ai, ${user.name}...`}
           name="text"
           type="text"
+          row="50"
+          value={form.text}
           onChange={(e) =>
             handleForm({
               name: e.target.name,
@@ -38,6 +52,7 @@ export default function WritePost({ user }) {
           placeholder="Se tiver uma imagem, cole a URL aqui"
           name="image"
           type="text"
+          value={form.image}
           onChange={(e) =>
             handleForm({
               name: e.target.name,
@@ -85,6 +100,8 @@ const WriteContainer = styled.section`
     outline: none;
     border: 1px solid #ccc;
     border-radius: 0.3rem;
+    resize: none;
+    font-family: "Arial";
 
     :focus {
       border: 2px solid #ffb6b6;

@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import "./Singin.css";
 import { singin } from "../../services/auth";
+import swal from "sweetalert";
 
 export default function Singin() {
   const [form, setForm] = useState({});
@@ -21,6 +22,14 @@ export default function Singin() {
   function handleSendForm(e) {
     e.preventDefault();
     singin(form).then((res) => {
+      if (res.data.message) {
+        return swal({
+          title: "Error",
+          text: res.data.message,
+          icon: "error",
+          timer: "7000",
+        });
+      }
       localStorage.setItem("token", res.data.token);
       navigate("/");
     });

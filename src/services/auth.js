@@ -8,13 +8,15 @@ export function singup(body) {
 }
 
 export function singin(body) {
-  const response = axios.post(`${BASE_URL}/singin`, body);
+  const response = axios.post(`${BASE_URL}/singin`, body).catch((error) => {
+    return error.response;
+  });
   return response;
 }
 
 export async function getUserById(id, jwt) {
   const response = await axios
-    .get(`${BASE_URL}/findById`, {
+    .get(id ? `${BASE_URL}/findById/${id}` : `${BASE_URL}/findById`, {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },

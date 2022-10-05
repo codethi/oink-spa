@@ -6,7 +6,8 @@ export default function Navbar({ user }) {
   const navigate = useNavigate();
 
   function handleExit() {
-    localStorage.clear();
+    localStorage.removeItem("token");
+
     navigate("/singin");
   }
 
@@ -19,7 +20,7 @@ export default function Navbar({ user }) {
 
       <span>
         Olá, {user.name} <img src={user.avatar} alt="Avatar User" />
-        <button onClick={handleExit}>Sair</button>
+        <ion-icon onClick={handleExit} name="exit-outline"></ion-icon>
       </span>
     </Wrapper>
   );
@@ -37,6 +38,7 @@ const Wrapper = styled.div`
   padding: 1rem;
   box-shadow: #00000030 0px 3px 8px;
   margin-bottom: 1rem;
+  
 
   div {
     display: flex;
@@ -55,21 +57,19 @@ const Wrapper = styled.div`
       border: 2px solid #ff8787;
     }
 
-    button {
+    ion-icon {
       background-color: transparent;
       outline: none;
-      border: 1px solid #ff8787;
-      padding: 0.5rem 1rem;
-      border-radius: 0.3rem;
+      padding-left: 0.6rem;
       color: #ff8787;
-      font-size: 1rem;
+      font-size: 2rem;
       font-weight: 700;
       transition: 0.3s;
       cursor: pointer;
+      
 
       :hover {
-        background-color: #ff8787;
-        color: #fff;
+        transform: scale(1.1);
       }
     }
   }
