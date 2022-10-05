@@ -2,8 +2,6 @@ import { useState } from "react";
 import styled from "styled-components";
 import { create } from "../../services/post";
 
-import swal from "sweetalert";
-
 export default function WritePost({ user, setRefresh, refresh }) {
   const [form, setForm] = useState({ text: "", image: "" });
   const jwt = localStorage.getItem("token");
@@ -19,12 +17,7 @@ export default function WritePost({ user, setRefresh, refresh }) {
     e.preventDefault();
     create(form, jwt).then((res) => {
       setForm({ text: "", image: "" });
-      swal({
-        title: "Success",
-        text: "Post criado com sucesso!",
-        icon: "success",
-        timer: "7000",
-      });
+      
       setRefresh(refresh + 1);
     });
   }

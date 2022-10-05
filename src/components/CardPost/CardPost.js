@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export default function CardPost({ post }) {
   let [date, time] = post.createdAt.split(" ");
-  time = time.substring(0,5)
+  time = time.substring(0, 5);
 
   return (
     <CardPostContainer>
@@ -16,8 +16,10 @@ export default function CardPost({ post }) {
         </span>
       </div>
 
-      {post.text}
-      {post.image ? <img src={post.image} alt="Post" /> : ""}
+      <div className="post-container">
+        {post.text}
+        {post.image ? <img src={post.image} alt="Post" /> : ""}
+      </div>
     </CardPostContainer>
   );
 }
@@ -47,6 +49,13 @@ const CardPostContainer = styled.article`
         font-weight: 500;
       }
     }
+  }
+
+  div.post-container{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0.5rem;
   }
 
   img {
