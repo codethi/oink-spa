@@ -5,7 +5,7 @@ import { RefreshContext } from "../../Contexts/RefreshContext";
 
 export default function WritePost({ user, jwt }) {
   const [form, setForm] = useState({ text: "", image: "" });
-  const { setRefresh } = useContext(RefreshContext);
+  const { refresh, setRefresh } = useContext(RefreshContext);
 
   function handleForm({ value, name }) {
     setForm({
@@ -18,7 +18,7 @@ export default function WritePost({ user, jwt }) {
     e.preventDefault();
     create(form, jwt).then((res) => {
       setForm({ text: "", image: "" });
-      setRefresh(true);
+      setRefresh(!refresh);
     });
   }
 

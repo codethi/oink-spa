@@ -10,8 +10,6 @@ import CardPost from "../CardPost/CardPost";
 import { getUserById } from "../../services/auth";
 import { findAll } from "../../services/post";
 
-
-
 import { AuthContext } from "../../Contexts/AuthContext";
 import { RefreshContext } from "../../Contexts/RefreshContext";
 
@@ -77,16 +75,15 @@ export default function Home() {
   }, []);
 
   return (
-    
-      <HomeContainer>
-        <Navbar user={user} />
-        <section>
-          <WritePost user={user} jwt={jwt} />
-          {posts.map((post, index) => (
-            <CardPost key={index} post={post} jwt={jwt} />
-          ))}
-        </section>
-      </HomeContainer>
+    <HomeContainer>
+      <Navbar user={user} />
+      <section>
+        <WritePost user={user} jwt={jwt} />
+        {posts.map((post, index) => (
+          <CardPost key={index} post={post} jwt={jwt} />
+        ))}
+      </section>
+    </HomeContainer>
   );
 }
 

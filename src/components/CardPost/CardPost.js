@@ -1,19 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import { likePost } from "../../services/post";
+import { RefreshContext } from "../../Contexts/RefreshContext";
 
 export default function CardPost({ post, jwt }) {
   let [date, time] = post.createdAt.split(" ");
   time = time.substring(0, 5);
+
   const [postLiked, setPostLiked] = useState(false);
-  
+  const { refresh, setRefresh } = useContext(RefreshContext);
 
   async function handleLike() {
-    await likePost(post.id, jwt);
-    checkLike();
+    const resp = await likePost(post.id, jwt);
+    if (resp.status === 200) {
+      setPostLiked(resp.data);
+      setRefresh(!refresh);
+    }
   }
 
-  function checkLike() {
+  function checkLikeFromThisUser() {
     post.likes.forEach((item) => {
       if (item.userId === post.loggedUser) {
         setPostLiked(true);
@@ -22,7 +27,7 @@ export default function CardPost({ post, jwt }) {
   }
 
   useEffect(() => {
-    checkLike();
+    checkLikeFromThisUser();
   }, []);
 
   return (
@@ -47,6 +52,7 @@ export default function CardPost({ post, jwt }) {
           onClick={handleLike}
           name={postLiked ? "heart" : "heart-outline"}
         ></ion-icon>
+        <p>{post.likes.length}</p>
       </InteractionContainer>
     </CardPostContainer>
   );
@@ -102,10 +108,19 @@ const PostContainer = styled.div`
 
 const InteractionContainer = styled.div`
   margin: 0.5rem;
+  display: flex;
+  align-items: center;
 
   ion-icon {
     color: #ff8787;
     font-size: 1.5rem;
     cursor: pointer;
   }
+
+  p{
+    font-size: .9rem;
+    color: #828282;
+    padding-left: 0.2rem;
+  }
+
 `;
