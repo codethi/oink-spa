@@ -1,19 +1,26 @@
+import { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import swal from "sweetalert";
 import styled from "styled-components";
+
 import Navbar from "../Navbar";
 import WritePost from "../WritePost/WritePost";
 import CardPost from "../CardPost/CardPost";
-import { useEffect, useState } from "react";
+
 import { getUserById } from "../../services/auth";
-import swal from "sweetalert";
-import { useNavigate } from "react-router-dom";
 import { findAll } from "../../services/post";
+
+
+
+import { AuthContext } from "../../Contexts/AuthContext";
+import { RefreshContext } from "../../Contexts/RefreshContext";
 
 export default function Home() {
   const [user, setUser] = useState({});
   const [posts, setPosts] = useState([]);
-  const [refresh, setRefresh] = useState(0);
 
-  const jwt = localStorage.getItem("token");
+  const { jwt } = useContext(AuthContext);
+  const { refresh } = useContext(RefreshContext);
   const navigate = useNavigate();
 
   async function getUser() {
@@ -38,11 +45,15 @@ export default function Home() {
     switch (res.status) {
       case 401:
         swal({
-          title: "Error",
-          text: res.data,
+          title: "Entre novamente",
+          text: "Token inválido ou expirado!",
           icon: "error",
           timer: "7000",
         });
+        setTimeout(() => {
+          navigate("/singin");
+        }, 100);
+
         break;
       case 500:
         swal({
@@ -66,15 +77,16 @@ export default function Home() {
   }, []);
 
   return (
-    <HomeContainer>
-      <Navbar user={user} />
-      <section>
-        <WritePost user={user} setRefresh={setRefresh} refresh={refresh} />
-        {posts.map((post, index) => (
-          <CardPost key={index} post={post} />
-        ))}
-      </section>
-    </HomeContainer>
+    
+      <HomeContainer>
+        <Navbar user={user} />
+        <section>
+          <WritePost user={user} jwt={jwt} />
+          {posts.map((post, index) => (
+            <CardPost key={index} post={post} jwt={jwt} />
+          ))}
+        </section>
+      </HomeContainer>
   );
 }
 

@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import styled from "styled-components";
 import { create } from "../../services/post";
+import { RefreshContext } from "../../Contexts/RefreshContext";
 
-export default function WritePost({ user, setRefresh, refresh }) {
+export default function WritePost({ user, jwt }) {
   const [form, setForm] = useState({ text: "", image: "" });
-  const jwt = localStorage.getItem("token");
+  const { setRefresh } = useContext(RefreshContext);
 
   function handleForm({ value, name }) {
     setForm({
@@ -17,8 +18,7 @@ export default function WritePost({ user, setRefresh, refresh }) {
     e.preventDefault();
     create(form, jwt).then((res) => {
       setForm({ text: "", image: "" });
-      
-      setRefresh(refresh + 1);
+      setRefresh(true);
     });
   }
 

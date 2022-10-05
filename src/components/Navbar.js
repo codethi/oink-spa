@@ -1,13 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import IconIonk from "../images/iconoink.png";
+import { useContext } from "react";
+import { AuthContext } from "../Contexts/AuthContext";
 
 export default function Navbar({ user }) {
   const navigate = useNavigate();
+  const { setJwt } = useContext(AuthContext);
 
   function handleExit() {
-    localStorage.removeItem("token");
-
+    setJwt("");
     navigate("/singin");
   }
 
@@ -38,7 +40,6 @@ const Wrapper = styled.div`
   padding: 1rem;
   box-shadow: #00000030 0px 3px 8px;
   margin-bottom: 1rem;
-  
 
   div {
     display: flex;
@@ -66,7 +67,6 @@ const Wrapper = styled.div`
       font-weight: 700;
       transition: 0.3s;
       cursor: pointer;
-      
 
       :hover {
         transform: scale(1.1);

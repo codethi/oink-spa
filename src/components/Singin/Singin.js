@@ -7,10 +7,13 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Singin.css";
 import { singin } from "../../services/auth";
 import swal from "sweetalert";
+import { useContext } from "react";
+import { AuthContext } from "../../Contexts/AuthContext";
 
 export default function Singin() {
   const [form, setForm] = useState({});
   const navigate = useNavigate();
+  const { setJwt } = useContext(AuthContext);
 
   function handleForm({ value, name }) {
     setForm({
@@ -30,7 +33,7 @@ export default function Singin() {
           timer: "7000",
         });
       }
-      localStorage.setItem("token", res.data.token);
+      setJwt(res.data.token);
       navigate("/");
     });
   }
