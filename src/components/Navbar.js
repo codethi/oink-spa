@@ -3,6 +3,7 @@ import styled from "styled-components";
 import IconIonk from "../images/iconoink.png";
 import { useContext } from "react";
 import { AuthContext } from "../Contexts/AuthContext";
+import ImageDefault from "../images/iconoink.png";
 
 export default function Navbar({ user }) {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ export default function Navbar({ user }) {
       </div>
 
       <span>
-        Olá, {user.name} <img src={user.avatar} alt="Avatar User" />
+        Olá, {user.name} <img src={!user.avatar ? ImageDefault : user.avatar} alt="Avatar User" />
         <ion-icon onClick={handleExit} name="exit-outline"></ion-icon>
       </span>
     </Wrapper>
@@ -56,6 +57,7 @@ const Wrapper = styled.div`
       border-radius: 50%;
       margin: 0 0.5rem;
       border: 2px solid #ff8787;
+      background-color: #ff8787;
     }
 
     ion-icon {

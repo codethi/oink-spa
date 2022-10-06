@@ -1,13 +1,17 @@
 import { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
-import { likePost } from "../../services/post";
+import { commentPost, likePost } from "../../services/post";
 import { RefreshContext } from "../../Contexts/RefreshContext";
+import ImageDefault from "../../images/iconoink.png";
 
-export default function CardPost({ post, jwt }) {
+export default function CardPost({ post, jwt, user }) {
   let [date, time] = post.createdAt.split(" ");
   time = time.substring(0, 5);
 
   const [postLiked, setPostLiked] = useState(false);
+  const [showCommnet, setShowCommnet] = useState(false);
+  const [comment, setComment] = useState("");
+
   const { refresh, setRefresh } = useContext(RefreshContext);
 
   async function handleLike() {
@@ -26,6 +30,14 @@ export default function CardPost({ post, jwt }) {
     });
   }
 
+  async function handleSendComment(e) {
+    e.preventDefault();
+    const newComment = { message: comment };
+    await commentPost(post.id, newComment, jwt);
+    setComment("");
+    setRefresh(!refresh);
+  }
+
   useEffect(() => {
     checkLikeFromThisUser();
   }, []);
@@ -33,7 +45,10 @@ export default function CardPost({ post, jwt }) {
   return (
     <CardPostContainer>
       <InfoContainer>
-        <img src={post.userAvatar} alt="User Avatar" />
+        <ImgAvatar
+          src={!post.userAvatar ? ImageDefault : post.userAvatar}
+          alt="User Avatar"
+        />
         <span>
           {post.userName}
           <p>
@@ -48,12 +63,59 @@ export default function CardPost({ post, jwt }) {
       </PostContainer>
 
       <InteractionContainer>
-        <ion-icon
-          onClick={handleLike}
-          name={postLiked ? "heart" : "heart-outline"}
-        ></ion-icon>
-        <p>{post.likes.length}</p>
+        <div>
+          <ion-icon
+            onClick={handleLike}
+            name={postLiked ? "heart" : "heart-outline"}
+          ></ion-icon>
+          <p>{post.likes.length}</p>
+        </div>
+
+        <div>
+          <ion-icon
+            onClick={() => setShowCommnet(!showCommnet)}
+            name="chatbubble-ellipses-outline"
+          ></ion-icon>
+          <p>{post.comments.length}</p>
+        </div>
       </InteractionContainer>
+
+      <CommentContainer>
+        {showCommnet ? (
+          <>
+            <form>
+              <ImgAvatar
+                src={!user.avatar ? ImageDefault : user.avatar}
+                alt="User Avatar"
+              />
+              <input
+                type="text"
+                name="text"
+                value={comment}
+                placeholder="Comente sobre esse post..."
+                onChange={(e) => setComment(e.target.value)}
+              />
+              <button onClick={handleSendComment}>Comentar</button>
+            </form>
+
+            <div>
+              {post.comments.map((item) => (
+                <article>
+                  <ImgAvatar
+                    src={
+                      !item.userId.avatar ? ImageDefault : item.userId.avatar
+                    }
+                    alt="User Avatar"
+                  />
+                  <p>{item.message}</p>
+                </article>
+              ))}
+            </div>
+          </>
+        ) : (
+          ""
+        )}
+      </CommentContainer>
     </CardPostContainer>
   );
 }
@@ -85,13 +147,6 @@ const InfoContainer = styled.div`
       font-weight: 500;
     }
   }
-
-  img {
-    width: 40px;
-    border-radius: 50%;
-    margin: 0 0.5rem;
-    border: 2px solid #ff8787;
-  }
 `;
 
 const PostContainer = styled.div`
@@ -111,16 +166,95 @@ const InteractionContainer = styled.div`
   display: flex;
   align-items: center;
 
+  div {
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+  }
+
   ion-icon {
     color: #ff8787;
     font-size: 1.5rem;
     cursor: pointer;
   }
 
-  p{
-    font-size: .9rem;
+  p {
+    font-size: 0.9rem;
     color: #828282;
     padding-left: 0.2rem;
   }
+`;
 
+const ImgAvatar = styled.img`
+  width: 40px;
+  border-radius: 50%;
+  margin: 0 0.5rem;
+  border: 2px solid #ff8787;
+  background-color: #ff8787;
+`;
+
+const CommentContainer = styled.div`
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+
+  form {
+    display: flex;
+    align-items: center;
+
+    input {
+      width: 100%;
+      font-size: 1rem;
+      padding: 0.5rem;
+      outline: none;
+      border: 1px solid #ccc;
+      border-right: 0;
+      border-radius: 0.3rem 0 0 0.3rem;
+
+      :focus {
+        border: 2px solid #ffb6b6;
+      }
+    }
+
+    button {
+      outline: none;
+      border: none;
+      border-radius: 0 0.3rem 0.3rem 0;
+      background-color: #ff8787;
+      padding: 0.65rem 0;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #fff;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: 0.4s;
+      width: 140px;
+
+      :hover {
+        background-color: #603434;
+      }
+    }
+  }
+
+  div {
+    margin: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+
+    p {
+      font-size: 1rem;
+    }
+
+    article {
+      display: flex;
+      align-items: center;
+      background-color: #ffdddd;
+      padding: 1rem;
+      border-radius: 0.5rem;
+    }
+  }
 `;

@@ -45,3 +45,21 @@ export function likePost(id, jwt) {
 
   return response;
 }
+
+export function commentPost(id, body, jwt) {
+  const response = axios
+    .patch(
+      `${BASE_URL}/post/comment/${id}`,
+      body,
+      {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      }
+    )
+    .catch((err) => {
+      console.log(err);
+    });
+
+  return response;
+}
