@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import IconOink from "../../images/iconoink.png";
 import { singup } from "../../services/auth";
@@ -24,7 +24,9 @@ export default function Singup() {
 
   return (
     <SingContainer>
-      <Image src={IconOink} alt="Logo Oink" />
+      <Link to="/singin">
+        <Image src={IconOink} alt="Logo Oink" />
+      </Link>
       <Form autoComplete="off">
         <Title>Cadastro</Title>
         <Input

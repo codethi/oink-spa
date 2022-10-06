@@ -245,16 +245,16 @@ const CommentContainer = styled.div`
     justify-content: center;
     gap: 1rem;
 
-    p {
-      font-size: 1rem;
-    }
-
     article {
       display: flex;
       align-items: center;
-      background-color: #ffdddd;
+      background-color: #fdecec;
       padding: 1rem;
       border-radius: 0.5rem;
+
+      p {
+        font-size: 1rem;
+      }
     }
   }
 `;

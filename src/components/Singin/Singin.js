@@ -4,7 +4,6 @@ import IconOink from "../../images/iconoink.png";
 import { useState } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-import "./Singin.css";
 import { singin } from "../../services/auth";
 import swal from "sweetalert";
 import { useContext } from "react";
@@ -41,6 +40,7 @@ export default function Singin() {
   return (
     <SingContainer>
       <Image src={IconOink} alt="Logo Oink" />
+
       <Form autoComplete="off">
         <Title>Entrar</Title>
 
@@ -70,10 +70,7 @@ export default function Singin() {
         <Button onClick={handleSendForm}>Entrar</Button>
 
         <span>
-          Não tem uma conta?{" "}
-          <Link className="link" to="/singup">
-            Cadastre-se
-          </Link>
+          Não tem uma conta? <Link className="link" to="/singup">Cadastre-se</Link>
         </span>
       </Form>
     </SingContainer>
@@ -96,5 +93,10 @@ export const Form = styled.form`
 
   span {
     margin-top: 1rem;
+
+    .link {
+      color: #ff8787;
+      font-weight: 600;
+    }
   }
 `;
