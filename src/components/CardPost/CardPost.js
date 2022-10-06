@@ -99,8 +99,8 @@ export default function CardPost({ post, jwt, user }) {
             </form>
 
             <div>
-              {post.comments.map((item) => (
-                <article>
+              {post.comments.map((item, index) => (
+                <article key={index}>
                   <ImgAvatar
                     src={
                       !item.userId.avatar ? ImageDefault : item.userId.avatar
