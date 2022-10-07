@@ -1,16 +1,17 @@
 import { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
-import { likePost } from "../../services/post";
+import { deletePost, likePost } from "../../services/post";
 import { RefreshContext } from "../../Contexts/RefreshContext";
 import ImageDefault from "../../images/iconoink.png";
 import CardComment from "../CardComment/CardComment";
 
-export default function CardPost({ post, user,jwt }) {
+export default function CardPost({ post, user, jwt }) {
   let [date, time] = post.createdAt.split(" ");
   time = time.substring(0, 5);
 
   const [postLiked, setPostLiked] = useState(false);
   const [showCommnet, setShowCommnet] = useState(false);
+  const [showMenuCard, setShowMenuCard] = useState(false);
 
   const { refresh, setRefresh } = useContext(RefreshContext);
 
@@ -30,6 +31,11 @@ export default function CardPost({ post, user,jwt }) {
     });
   }
 
+  async function handleDeletePost(id) {
+    await deletePost(id, jwt);
+    setRefresh(!refresh);
+  }
+
   useEffect(() => {
     checkLikeFromThisUser();
   }, []);
@@ -37,16 +43,27 @@ export default function CardPost({ post, user,jwt }) {
   return (
     <CardPostContainer>
       <InfoContainer>
-        <ImgAvatar
-          src={!post.userAvatar ? ImageDefault : post.userAvatar}
-          alt="User Avatar"
-        />
-        <span>
-          {post.userName}
-          <p>
-            {time} - {date}
-          </p>
-        </span>
+        <div>
+          <ImgAvatar
+            src={!post.userAvatar ? ImageDefault : post.userAvatar}
+            alt="User Avatar"
+          />
+          <span>
+            {post.userName}
+            <p>
+              {time} - {date}
+            </p>
+          </span>
+        </div>
+
+        {post.loggedUser === post.userId ? (
+          <ion-icon
+            onClick={() => handleDeletePost(post.id)}
+            name="close-circle-outline"
+          ></ion-icon>
+        ) : (
+          ""
+        )}
       </InfoContainer>
 
       <PostContainer>
@@ -96,8 +113,25 @@ const CardPostContainer = styled.article`
 
 const InfoContainer = styled.div`
   display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
+  justify-content: space-between;
+
+  div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  ion-icon {
+    color: #f62700;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: 0.3s;
+
+    :hover {
+      color: #820011;
+      transform: scale(1.1);
+    }
+  }
 
   span {
     font-size: 1.4rem;

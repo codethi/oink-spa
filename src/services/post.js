@@ -28,6 +28,20 @@ export function findAll(jwt) {
   return response;
 }
 
+export function deletePost(idPost, jwt) {
+  const response = axios
+    .delete(`${BASE_URL}/post/${idPost}`, {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  return response;
+}
+
 export function likePost(id, jwt) {
   const response = axios
     .patch(
@@ -48,15 +62,11 @@ export function likePost(id, jwt) {
 
 export function commentPost(id, body, jwt) {
   const response = axios
-    .patch(
-      `${BASE_URL}/post/comment/${id}`,
-      body,
-      {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      }
-    )
+    .patch(`${BASE_URL}/post/comment/${id}`, body, {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    })
     .catch((err) => {
       console.log(err);
     });
