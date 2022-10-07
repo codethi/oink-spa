@@ -11,7 +11,6 @@ export default function CardPost({ post, user, jwt }) {
 
   const [postLiked, setPostLiked] = useState(false);
   const [showCommnet, setShowCommnet] = useState(false);
-  const [showMenuCard, setShowMenuCard] = useState(false);
 
   const { refresh, setRefresh } = useContext(RefreshContext);
 

@@ -8,11 +8,14 @@ import { singin } from "../../services/auth";
 import swal from "sweetalert";
 import { useContext } from "react";
 import { AuthContext } from "../../Contexts/AuthContext";
+import { LoadContext } from "../../Contexts/LoadContext";
+import Load from "../Load/Load";
 
 export default function Singin() {
   const [form, setForm] = useState({});
   const navigate = useNavigate();
   const { setJwt } = useContext(AuthContext);
+  const { isLoading, setIsLoading } = useContext(LoadContext);
 
   function handleForm({ value, name }) {
     setForm({
@@ -23,6 +26,7 @@ export default function Singin() {
 
   function handleSendForm(e) {
     e.preventDefault();
+    setIsLoading(true)
     singin(form).then((res) => {
       if (res.data.message) {
         return swal({
@@ -33,8 +37,13 @@ export default function Singin() {
         });
       }
       setJwt(res.data.token);
+      setIsLoading(false)
       navigate("/");
     });
+  }
+
+  if(isLoading){
+    return <Load/>
   }
 
   return (
@@ -70,7 +79,10 @@ export default function Singin() {
         <Button onClick={handleSendForm}>Entrar</Button>
 
         <span>
-          Não tem uma conta? <Link className="link" to="/singup">Cadastre-se</Link>
+          Não tem uma conta?{" "}
+          <Link className="link" to="/singup">
+            Cadastre-se
+          </Link>
         </span>
       </Form>
     </SingContainer>

@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { LoadContext } from "../../Contexts/LoadContext";
 import IconOink from "../../images/iconoink.png";
 import { singup } from "../../services/auth";
+import Load from "../Load/Load";
 
 export default function Singup() {
   const [form, setForm] = useState({});
   const navigate = useNavigate();
+  const { isLoading, setIsLoading } = useContext(LoadContext);
 
   function handleForm({ value, name }) {
     setForm({
@@ -17,9 +20,15 @@ export default function Singup() {
 
   function handleSendForm(e) {
     e.preventDefault();
+    setIsLoading(true);
     singup(form).then((res) => {
+      setIsLoading(false);
       navigate("/singin");
     });
+  }
+
+  if (isLoading) {
+    return <Load />;
   }
 
   return (

@@ -12,6 +12,8 @@ import { findAll } from "../../services/post";
 
 import { AuthContext } from "../../Contexts/AuthContext";
 import { RefreshContext } from "../../Contexts/RefreshContext";
+import { LoadContext } from "../../Contexts/LoadContext";
+import Load from "../Load/Load";
 
 export default function Home() {
   const [user, setUser] = useState({});
@@ -19,9 +21,11 @@ export default function Home() {
 
   const { jwt } = useContext(AuthContext);
   const { refresh } = useContext(RefreshContext);
+  const { isLoading, setIsLoading } = useContext(LoadContext);
   const navigate = useNavigate();
 
   async function getUser() {
+    setIsLoading(true);
     const res = await getUserById(null, jwt);
     if (res.message) {
       swal({
@@ -36,9 +40,11 @@ export default function Home() {
       }, 1000);
     }
     setUser(res);
+    setIsLoading(false);
   }
 
   async function getAllPosts() {
+    setIsLoading(true);
     const res = await findAll(jwt);
     switch (res.status) {
       case 401:
@@ -63,6 +69,7 @@ export default function Home() {
         break;
       default:
         setPosts(res.data.result);
+        setIsLoading(false);
     }
   }
 
@@ -73,6 +80,10 @@ export default function Home() {
   useEffect(() => {
     getUser();
   }, []);
+
+  if (isLoading) {
+    return <Load />;
+  }
 
   return (
     <HomeContainer>
