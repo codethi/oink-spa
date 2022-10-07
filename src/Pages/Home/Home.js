@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import styled from "styled-components";
 
-import Navbar from "../Navbar";
-import WritePost from "../WritePost/WritePost";
-import CardPost from "../CardPost/CardPost";
+import Navbar from "../../components/Navbar";
+import WritePost from "../../components/WritePost/WritePost";
+import CardPost from "../../components/CardPost/CardPost";
 
 import { getUserById } from "../../services/auth";
 import { findAll } from "../../services/post";
@@ -13,7 +13,7 @@ import { findAll } from "../../services/post";
 import { AuthContext } from "../../Contexts/AuthContext";
 import { RefreshContext } from "../../Contexts/RefreshContext";
 import { LoadContext } from "../../Contexts/LoadContext";
-import Load from "../Load/Load";
+import Load from "../../components/Load/Load";
 
 export default function Home() {
   const [user, setUser] = useState({});

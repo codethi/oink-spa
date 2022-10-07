@@ -1,10 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { GlobalStyle } from "../globalStyles";
-import Details from "./Details/Details";
-import Home from "./Home/Home";
+import Home from "../Pages/Home/Home";
+import Profile from "../Pages/Profile/Profile";
 import Singin from "./Singin/Singin";
 import Singup from "./Singup/Singup";
 import RefreshProvider from "../Contexts/RefreshContext";
+
 
 export default function App() {
   return (
@@ -16,7 +17,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/singup" element={<Singup />} />
             <Route path="/singin" element={<Singin />} />
-            <Route path="/details/:id" element={<Details />} />
+            <Route path="/profile/:id" element={<Profile />} />
           </Routes>
         </BrowserRouter>
       </RefreshProvider>

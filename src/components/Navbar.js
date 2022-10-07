@@ -14,15 +14,28 @@ export default function Navbar({ user }) {
     navigate("/singin");
   }
 
+  function handleHome() {
+    navigate("/");
+  }
+
+  function handleProfile() {
+    navigate(`/profile/${user._id}`);
+  }
+
   return (
     <Wrapper>
-      <div>
+      <div onClick={handleHome}>
         <Icon src={IconIonk} alt="Icone Oink" />
         Oink
       </div>
 
       <span>
-        Olá, {user.name} <img src={!user.avatar ? ImageDefault : user.avatar} alt="Avatar User" />
+        Olá, {user.name}{" "}
+        <img
+          onClick={handleProfile}
+          src={!user.avatar ? ImageDefault : user.avatar}
+          alt="Avatar User"
+        />
         <ion-icon onClick={handleExit} name="exit-outline"></ion-icon>
       </span>
     </Wrapper>
@@ -45,6 +58,7 @@ const Wrapper = styled.div`
   div {
     display: flex;
     align-items: center;
+    cursor: pointer;
   }
 
   span {
@@ -58,6 +72,12 @@ const Wrapper = styled.div`
       margin: 0 0.5rem;
       border: 2px solid #ff8787;
       background-color: #ff8787;
+      cursor: pointer;
+      transition: .3s;
+
+      :hover {
+        transform: scale(1.1);
+      }
     }
 
     ion-icon {
