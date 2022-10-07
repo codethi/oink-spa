@@ -63,3 +63,21 @@ export function commentPost(id, body, jwt) {
 
   return response;
 }
+
+export function deleteCommentPost(idPost, idComment, jwt) {
+  const response = axios
+    .patch(
+      `${BASE_URL}/post/comment/${idPost}/${idComment}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      }
+    )
+    .catch((err) => {
+      console.log(err);
+    });
+
+  return response;
+}

@@ -1,11 +1,11 @@
 import { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
-import { commentPost, likePost } from "../../services/post";
+import { likePost } from "../../services/post";
 import { RefreshContext } from "../../Contexts/RefreshContext";
 import ImageDefault from "../../images/iconoink.png";
 import CardComment from "../CardComment/CardComment";
 
-export default function CardPost({ post, jwt, user }) {
+export default function CardPost({ post, user,jwt }) {
   let [date, time] = post.createdAt.split(" ");
   time = time.substring(0, 5);
 

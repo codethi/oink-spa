@@ -80,7 +80,7 @@ export default function Home() {
       <section>
         <WritePost user={user} jwt={jwt} />
         {posts.map((post, index) => (
-          <CardPost key={index} post={post} jwt={jwt} user={user} />
+          <CardPost key={index} post={post} user={user} jwt={jwt} />
         ))}
       </section>
     </HomeContainer>

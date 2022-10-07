@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { ImgAvatar } from "../CardPost/CardPost";
 import ImageDefault from "../../images/iconoink.png";
 import { useContext, useState } from "react";
-import { commentPost } from "../../services/post";
+import { commentPost, deleteCommentPost } from "../../services/post";
 import { RefreshContext } from "../../Contexts/RefreshContext";
 
 export default function CardComment({ post, showCommnet, user, jwt }) {
@@ -17,6 +17,12 @@ export default function CardComment({ post, showCommnet, user, jwt }) {
     setComment("");
     setRefresh(!refresh);
   }
+
+  async function handleDeleteComment(idPost, idComment) {
+    await deleteCommentPost(idPost, idComment, jwt);
+    setRefresh(!refresh);
+  }
+
   return (
     <CommentContainer>
       {showCommnet ? (
@@ -36,17 +42,28 @@ export default function CardComment({ post, showCommnet, user, jwt }) {
             <button onClick={handleSendComment}>Comentar</button>
           </form>
 
-          <div>
+          <ListComments>
             {post.comments.map((item, index) => (
               <article key={index}>
-                <ImgAvatar
-                  src={!item.userId.avatar ? ImageDefault : item.userId.avatar}
-                  alt="User Avatar"
-                />
-                <p>{item.message}</p>
+                <div>
+                  <ImgAvatar
+                    src={!item.user.avatar ? ImageDefault : item.user.avatar}
+                    alt="User Avatar"
+                  />
+                  <span>{item.message}</span>
+                </div>
+
+                {post.loggedUser === item.user._id ? (
+                  <ion-icon
+                    onClick={() => handleDeleteComment(post.id, item.idComment)}
+                    name="close-circle-outline"
+                  ></ion-icon>
+                ) : (
+                  ""
+                )}
               </article>
             ))}
-          </div>
+          </ListComments>
         </>
       ) : (
         ""
@@ -99,23 +116,42 @@ const CommentContainer = styled.div`
       }
     }
   }
+`;
 
-  div {
-    margin: 0.5rem;
+const ListComments = styled.div`
+  margin: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+
+  article {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fdecec;
+    padding: 1rem;
+    border-radius: 0.5rem;
 
-    article {
+    div {
+      width: 100%;
       display: flex;
       align-items: center;
-      background-color: #fdecec;
-      padding: 1rem;
-      border-radius: 0.5rem;
 
       p {
         font-size: 1rem;
+      }
+    }
+
+    ion-icon {
+      color: #f62700;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: 0.3s;
+
+      :hover {
+        color: #820011;
+        transform: scale(1.1);
       }
     }
   }
