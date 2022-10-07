@@ -9,13 +9,14 @@ import { AuthContext } from "../../Contexts/AuthContext";
 import { LoadContext } from "../../Contexts/LoadContext";
 import { getUserById } from "../../services/auth";
 import { findPostByUser } from "../../services/post";
+import { RefreshContext } from "../../Contexts/RefreshContext";
 
 export default function Profile() {
   const [user, setUser] = useState({});
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
   const { id } = useParams();
-
+  const { refresh } = useContext(RefreshContext);
   const { jwt } = useContext(AuthContext);
   const { isLoading, setIsLoading } = useContext(LoadContext);
 
@@ -48,7 +49,7 @@ export default function Profile() {
   useEffect(() => {
     getUser();
     getPostsByUser();
-  }, []);
+  }, [refresh]);
 
   if (isLoading) {
     return <Load />;
