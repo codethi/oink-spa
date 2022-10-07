@@ -5,7 +5,7 @@ import Profile from "../Pages/Profile/Profile";
 import Singin from "./Singin/Singin";
 import Singup from "./Singup/Singup";
 import RefreshProvider from "../Contexts/RefreshContext";
-
+import PageNotFound from "../Pages/PageNotFound/PageNotFound";
 
 export default function App() {
   return (
@@ -18,6 +18,7 @@ export default function App() {
             <Route path="/singup" element={<Singup />} />
             <Route path="/singin" element={<Singin />} />
             <Route path="/profile/:id" element={<Profile />} />
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>
       </RefreshProvider>
