@@ -2,10 +2,14 @@ import { useState, useContext } from "react";
 import styled from "styled-components";
 import { create } from "../../services/post";
 import { RefreshContext } from "../../Contexts/RefreshContext";
+import { LoadContext } from "../../Contexts/LoadContext";
+import Load from "../Load/Load";
 
 export default function WritePost({ user, jwt }) {
   const [form, setForm] = useState({ text: "", image: "" });
   const { refresh, setRefresh } = useContext(RefreshContext);
+
+  const { isLoading, setIsLoading } = useContext(LoadContext);
 
   function handleForm({ value, name }) {
     setForm({
@@ -16,13 +20,19 @@ export default function WritePost({ user, jwt }) {
 
   function handleSendForm(e) {
     e.preventDefault();
+    setIsLoading(true);
     create(form, jwt).then((res) => {
       setForm({ text: "", image: "" });
+      setIsLoading(false);
       setRefresh(!refresh);
     });
   }
 
   /* https://picsum.photos/1000/500 */
+
+  if (isLoading) {
+    return <Load />;
+  }
 
   return (
     <WriteContainer>

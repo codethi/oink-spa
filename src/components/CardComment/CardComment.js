@@ -4,23 +4,35 @@ import ImageDefault from "../../images/iconoink.png";
 import { useContext, useState } from "react";
 import { commentPost, deleteCommentPost } from "../../services/post";
 import { RefreshContext } from "../../Contexts/RefreshContext";
+import { LoadContext } from "../../Contexts/LoadContext";
+import Load from "../Load/Load";
 
 export default function CardComment({ post, showCommnet, user, jwt }) {
   const [comment, setComment] = useState("");
 
   const { refresh, setRefresh } = useContext(RefreshContext);
 
+  const { isLoading, setIsLoading } = useContext(LoadContext);
+
   async function handleSendComment(e) {
     e.preventDefault();
+    setIsLoading(true);
     const newComment = { message: comment };
     await commentPost(post.id, newComment, jwt);
     setComment("");
+    setIsLoading(false);
     setRefresh(!refresh);
   }
 
   async function handleDeleteComment(idPost, idComment) {
+    setIsLoading(true);
     await deleteCommentPost(idPost, idComment, jwt);
+    setIsLoading(false);
     setRefresh(!refresh);
+  }
+
+  if (isLoading) {
+    return <Load />;
   }
 
   return (

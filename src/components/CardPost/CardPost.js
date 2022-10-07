@@ -4,6 +4,8 @@ import { deletePost, likePost } from "../../services/post";
 import { RefreshContext } from "../../Contexts/RefreshContext";
 import ImageDefault from "../../images/iconoink.png";
 import CardComment from "../CardComment/CardComment";
+import { LoadContext } from "../../Contexts/LoadContext";
+import Load from "../Load/Load";
 
 export default function CardPost({ post, user, jwt }) {
   let [date, time] = post.createdAt.split(" ");
@@ -14,10 +16,14 @@ export default function CardPost({ post, user, jwt }) {
 
   const { refresh, setRefresh } = useContext(RefreshContext);
 
+  const { isLoading, setIsLoading } = useContext(LoadContext);
+
   async function handleLike() {
+    setIsLoading(true);
     const resp = await likePost(post.id, jwt);
     if (resp.status === 200) {
       setPostLiked(resp.data);
+      setIsLoading(false);
       setRefresh(!refresh);
     }
   }
@@ -31,13 +37,19 @@ export default function CardPost({ post, user, jwt }) {
   }
 
   async function handleDeletePost(id) {
+    setIsLoading(true);
     await deletePost(id, jwt);
+    setIsLoading(false);
     setRefresh(!refresh);
   }
 
   useEffect(() => {
     checkLikeFromThisUser();
   }, []);
+
+  if (isLoading) {
+    return <Load />;
+  }
 
   return (
     <CardPostContainer>
